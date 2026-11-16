@@ -46,6 +46,7 @@ export class TelarCanvas extends LitElement {
 
   private binding?: StudioBinding;
   private lastFit = -1;
+  private lastSelected: NodeId | null = null;
   private resizeObserver?: ResizeObserver;
 
   override connectedCallback(): void {
@@ -68,7 +69,40 @@ export class TelarCanvas extends LitElement {
       this.lastFit = this.controller.fitRequest;
       this.fit();
     }
+    const selection = this.controller.state.selection;
+    const selectedId = selection?.type === "node" ? selection.id : null;
+    if (selectedId !== this.lastSelected) {
+      this.lastSelected = selectedId;
+      if (selectedId && this.interaction.type === "idle") this.revealNode(selectedId);
+    }
     if (changed.has("tx") || changed.has("ty") || changed.has("k")) this.publishCenter();
+  }
+
+  /**
+   * Pans just enough to bring a node fully into view, e.g. one the assistant or the Pieces
+   * panel just added off-screen. Does nothing when the node is already visible.
+   */
+  private revealNode(id: NodeId): void {
+    const node = this.controller.node(id);
+    const rect = this.getBoundingClientRect();
+    if (!node || rect.width === 0) return;
+    const margin = 40;
+    const top = 52; // legend
+    const bottom = 56; // zoom controls
+    const left = node.position.x * this.k + this.tx;
+    const right = (node.position.x + NODE_WIDTH) * this.k + this.tx;
+    const upper = node.position.y * this.k + this.ty;
+    const lower = (node.position.y + NODE_HEIGHT) * this.k + this.ty;
+    let dx = 0;
+    let dy = 0;
+    if (left < margin) dx = margin - left;
+    else if (right > rect.width - margin) dx = rect.width - margin - right;
+    if (upper < top + margin) dy = top + margin - upper;
+    else if (lower > rect.height - bottom - margin) dy = rect.height - bottom - margin - lower;
+    if (dx || dy) {
+      this.tx += dx;
+      this.ty += dy;
+    }
   }
 
   /* ------------------------------------------------------------ view */
