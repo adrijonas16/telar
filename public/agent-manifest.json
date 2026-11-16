@@ -76,6 +76,7 @@
       "set_entry_point",
       "remove_piece",
       "update_network",
+      "apply_fix",
       "tidy_layout"
     ]
   }

@@ -23,12 +23,13 @@ Other agent sites can call it at `https://adrijonas16.github.io/telar/telar_assi
   from an agent's port to let it call another node. Undo/redo, auto-layout, keyboard moves.
 - **Live validation:** runs the reference runtime's own validator plus Telar's specification
   checks (unique names, input schemas, HTTPS peers, unreachable agents, cycles, leaked API keys).
-  Each issue links to its node and to the spec section it enforces.
+  Each issue links to its node and to the spec section it enforces, and some have a one-click
+  fix (for example, adding the peer rule other sites' agents need).
 - **Lossless import:** load any published agentic site by URL, a `.network.json` file or pasted
   JSON. Fields Telar does not edit are preserved on export.
 - **Export:** a ready-to-host site bundle (.zip) or each file individually.
 - **Ask Telar:** a built-in assistant on the reference runtime. It reads the canvas and the
-  checks and changes the network through 12 site actions (build a whole network, add or
+  checks and changes the network through 13 site actions (build a whole network, add or
   connect pieces, fix what the checks flag). Every change is one Undo step.
 
 ## Telar's own agent network
@@ -37,7 +38,7 @@ Other agent sites can call it at `https://adrijonas16.github.io/telar/telar_assi
 | --------------------------------------------------------- | -------------------------------------------------------------------------- |
 | `agent-manifest.json`                                     | Site manifest: the `telar_assistant` network, router, peer policy, actions |
 | `telar_assistant.network.json`                            | The network (built from `agent/telar_assistant.hocon`)                     |
-| `site-actions.js`                                         | The 12 `website_*` tools, wrapping `src/ui/page-api.ts`                    |
+| `site-actions.js`                                         | The 13 `website_*` tools, wrapping `src/ui/page-api.ts`                    |
 | `runtime/`                                                | Reference browser runtime, unchanged                                       |
 | `bridge/`, `.well-known/`, `agent-mcp.json`, `links.json` | Linking and discovery files                                                |
 

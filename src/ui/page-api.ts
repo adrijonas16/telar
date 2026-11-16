@@ -16,6 +16,8 @@
  */
 import {
   AGENT_NAME_PATTERN,
+  applyFix,
+  withPeerRule,
   applyLayout,
   commands,
   createAgent,
@@ -116,6 +118,7 @@ export class TelarPage {
           piece: i.nodeId ? label(byId.get(i.nodeId) as StudioNode) : null,
           message: i.message,
           code: i.code,
+          fix: i.fix?.label ?? null,
         })),
       },
       canUndo: this.c.store.canUndo,
@@ -319,6 +322,23 @@ export class TelarPage {
     return this.apply(doc);
   }
 
+  /** Applies the one-click fix of a check issue, by its code and the piece it is about. */
+  applyFix(args: { code: string; piece?: string }) {
+    const target = args.piece ? this.find(args.piece) : undefined;
+    if (args.piece && !target) return refuse(`'${args.piece}' is not on the canvas.`, "piece");
+    const issue = this.c.report.issues.find(
+      (i) => i.code === args.code && (!target || i.nodeId === target.id),
+    );
+    if (!issue)
+      return refuse(
+        `There is no '${args.code}' issue${args.piece ? ` on '${args.piece}'` : ""} now.`,
+        "code",
+      );
+    if (!issue.fix)
+      return refuse(`The '${args.code}' issue has no automatic fix. Change the network instead.`, "code");
+    return this.apply(applyFix(this.c.doc, issue), issue.nodeId);
+  }
+
   tidyLayout() {
     const result = this.apply(applyLayout(this.c.doc));
     this.c.requestFit();
@@ -391,13 +411,17 @@ export class TelarPage {
       nodes.push(createMcp(s.url.trim(), (s.tools ?? []).map((t) => t.trim()).filter(Boolean)));
     }
     const idOf = new Map(nodes.map((n) => [label(n), n.id]));
+    // The entry agent answers other sites' agents too: give it the standard peer rule.
+    const entryNode = nodes.find(
+      (n): n is AgentNode => n.kind === "agent" && n.name === spec.entryPoint.trim(),
+    );
     const edges: Edge[] = [];
     for (const a of spec.agents) {
       for (const ref of new Set((a.calls ?? []).map((r) => r.trim()))) {
         edges.push({ from: idOf.get(a.name.trim()) as NodeId, to: idOf.get(ref) as NodeId });
       }
     }
-    const doc = applyLayout({
+    let doc = applyLayout({
       ...this.c.doc,
       network: {
         ...this.c.doc.network,
@@ -413,6 +437,9 @@ export class TelarPage {
       edges,
       frontAgentId: idOf.get(spec.entryPoint.trim()) ?? null,
     });
+    if (entryNode) {
+      doc = commands.updateNode<AgentNode>(doc, entryNode.id, { instructions: withPeerRule(doc, entryNode) });
+    }
     const result = this.apply(doc);
     this.c.requestFit();
     return result;

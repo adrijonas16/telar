@@ -41,7 +41,7 @@ export class TelarIssues extends LitElement {
       <ul>
         ${report.issues.map(
           (i) =>
-            html`<li>
+            html`<li class="row">
               <button class="issue ${i.severity}" @click=${() => this.open(i)}>
                 <span class="sev">${i.severity === "error" ? "●" : "▲"}</span>
                 <span class="msg">${i.message}</span>
@@ -51,6 +51,13 @@ export class TelarIssues extends LitElement {
                   <span class="chip code">${i.code}</span>
                 </span>
               </button>
+              ${
+                i.fix
+                  ? html`<button class="fix" @click=${() => this.controller.applyFix(i)}>
+                      ${i.fix.label}
+                    </button>`
+                  : ""
+              }
             </li>`,
         )}
       </ul>
@@ -84,6 +91,23 @@ export class TelarIssues extends LitElement {
         padding: 0;
         display: grid;
         gap: 2px;
+      }
+      li.row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      button.fix {
+        flex: none;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-color: var(--agent);
+        color: var(--agent);
+        font-weight: 700;
+      }
+      button.fix:hover:not(:disabled) {
+        background: var(--agent-soft);
+        border-color: var(--agent);
       }
       button.issue {
         width: 100%;

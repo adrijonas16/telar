@@ -104,8 +104,25 @@ describe("TelarPage (site actions)", () => {
     expect(state.entryPoint).toBe("front_desk");
     expect(state.checks.errors).toBe(0);
     expect(toNetworkJson(controller.doc).tools[0]?.name).toBe("front_desk");
+    // The entry agent gets the standard peer rule automatically.
+    expect(state.agents.find((a) => a.name === "front_desk")?.instructions).toContain(
+      "another site's assistant is asking",
+    );
+    expect(state.checks.issues.some((i) => i.code === "agentic.peer-rule")).toBe(false);
     controller.undo();
     expect(page.getState().network.name).toBe("panaderia_sol");
+  });
+
+  it("applies a check's one-click fix by code, as one undo step", () => {
+    const { page, controller } = setup();
+    page.setEntryPoint({ name: "menu_specialist" });
+    const before = page.getState().checks.issues.find((i) => i.code === "agentic.peer-rule");
+    expect(before?.fix).toBe("Add the peer rule");
+    expect(page.applyFix({ code: "agentic.peer-rule", piece: "menu_specialist" }).ok).toBe(true);
+    expect(page.getState().checks.issues.some((i) => i.code === "agentic.peer-rule")).toBe(false);
+    expect(page.applyFix({ code: "agentic.peer-rule" })).toMatchObject({ ok: false, field: "code" });
+    controller.undo();
+    expect(page.getState().checks.issues.some((i) => i.code === "agentic.peer-rule")).toBe(true);
   });
 
   it("refuses a build whose calls point at nothing", () => {

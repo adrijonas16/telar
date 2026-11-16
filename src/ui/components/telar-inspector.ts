@@ -53,7 +53,12 @@ export class TelarInspector extends LitElement {
       ${issues.map(
         (i) =>
           html`<li class=${i.severity}>
-            <span class="sev">${i.severity === "error" ? "Error" : "Warning"}</span>${i.message}
+            <span class="sev">${i.severity === "error" ? "Error" : "Tip"}</span>${i.message}
+            ${
+              i.fix
+                ? html`<button class="small fix" @click=${() => this.c.applyFix(i)}>${i.fix.label}</button>`
+                : nothing
+            }
           </li>`,
       )}
     </ul>`;
@@ -430,6 +435,8 @@ export class TelarInspector extends LitElement {
         border-color: transparent;
       }
       .chip.front {
+        flex: none;
+        white-space: nowrap;
         background: var(--accent-soft);
         color: var(--accent);
         border-color: transparent;
@@ -513,6 +520,13 @@ export class TelarInspector extends LitElement {
         line-height: 1.4;
         padding: 7px 9px;
         border-radius: var(--radius-sm);
+      }
+      .issues .fix {
+        display: flex;
+        margin-top: 8px;
+        border-color: var(--agent);
+        color: var(--agent);
+        font-weight: 700;
       }
       .issues li.error {
         background: var(--error-soft);

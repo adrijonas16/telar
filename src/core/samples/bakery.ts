@@ -1,6 +1,7 @@
 import { applyLayout } from "../layout/layered-layout.ts";
 import { createAgent, createMcp, createPeer, DEFAULT_MODEL, DEFAULT_ROUTER } from "../model/factory.ts";
 import type { StudioDocument } from "../model/types.ts";
+import { PEER_RULE_TEXT } from "../agentic/peer-rule.ts";
 
 /** A small, valid starter network showing every node kind. */
 export function bakerySample(): StudioDocument {
@@ -10,7 +11,8 @@ export function bakerySample(): StudioDocument {
     instructions:
       "You are the front desk of Panadería Sol, a bakery in Lima. Understand the visitor's request and delegate it: " +
       "menu and allergen questions to menu_specialist, orders to order_specialist. Summarize their answers briefly. " +
-      "Never invent products, prices or opening hours.",
+      "Never invent products, prices or opening hours.\n\n" +
+      PEER_RULE_TEXT,
   });
   const menu = createAgent({
     name: "menu_specialist",

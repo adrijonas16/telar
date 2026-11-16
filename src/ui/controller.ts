@@ -7,6 +7,7 @@
  * studio's future assistant agent the same action surface as a human user.
  */
 import {
+  applyFix,
   applyLayout,
   bakerySample,
   commands,
@@ -17,6 +18,7 @@ import {
   Store,
   validate,
   type AgentNode,
+  type Issue,
   type NodeId,
   type Position,
   type Selection,
@@ -169,6 +171,15 @@ export class StudioController {
 
   updateSite(patch: Partial<StudioDocument["site"]>, mergeKey?: string): void {
     this.store.commit(commands.updateSite(this.doc, patch), { mergeKey });
+  }
+
+  /** Applies an issue's one-click fix as a single undo step. */
+  applyFix(issue: Issue): void {
+    const next = applyFix(this.doc, issue);
+    if (next === this.doc) return;
+    this.store.commit(next);
+    if (issue.nodeId) this.select({ type: "node", id: issue.nodeId });
+    this.toast(`Fixed: ${issue.fix?.label ?? issue.code}.`);
   }
 
   autoLayout(): void {

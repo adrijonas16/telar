@@ -87,7 +87,9 @@ examples of the challenge repository byte-for-byte (as JSON values).
 | Capabilities      | HTTPS peers ending in a network name, MCP URLs, CORS reminder | §3.2, §3.4                                |
 | Security          | credentials in any published string                           | §2.2, §4                                  |
 
-A rule is a plain object `{ code, summary, specRef, check(ctx) }`. Adding a check is one file
+A rule is a plain object `{ code, summary, specRef, check(ctx) }`. An issue may carry
+`fix: {id, label}`; `validate/fixes.ts` maps the id to a pure `(doc, issue) => doc`, which
+the UI's "Fix" buttons and the assistant's `apply_fix` action both apply as one undo step. Adding a check is one file
 and one test; the UI shows it automatically. A rule that throws is reported as a warning
 instead of hiding the others. Errors block "conforming"; warnings are suggestions.
 

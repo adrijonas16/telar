@@ -336,6 +336,32 @@ class SiteActions {
         execute: (args) => page().updateNetwork(args),
       },
       {
+        name: "apply_fix",
+        description:
+          "Apply the one-click fix of a check issue that has one (its fix field in website_get_studio_state is not null), such as adding the standard peer rule to the entry agent. Returns the new state, or ok false with a reason.",
+        effect: "write",
+        inputSchema: {
+          type: "object",
+          additionalProperties: false,
+          required: ["code"],
+          properties: {
+            code: {
+              type: "string",
+              minLength: 1,
+              maxLength: 80,
+              description: "The issue code, such as agentic.peer-rule.",
+            },
+            piece: {
+              type: "string",
+              minLength: 1,
+              maxLength: 500,
+              description: "Optional: the agent name or URL the issue is about.",
+            },
+          },
+        },
+        execute: (args) => page().applyFix(args),
+      },
+      {
         name: "tidy_layout",
         description: "Arrange the cards on the canvas by delegation level. Changes only positions.",
         effect: "write",

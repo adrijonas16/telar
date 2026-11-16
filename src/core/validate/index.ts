@@ -6,6 +6,7 @@ import type { StudioDocument } from "../model/types.ts";
 import { toManifest } from "../serialize/manifest.ts";
 import { toNetworkJson } from "../serialize/network.ts";
 import { agentRules } from "./rules/agent-rules.ts";
+import { agenticRules } from "./rules/agentic-rules.ts";
 import { capabilityRules } from "./rules/capability-rules.ts";
 import { graphRules } from "./rules/graph-rules.ts";
 import { networkRules } from "./rules/network-rules.ts";
@@ -14,6 +15,7 @@ import { securityRules } from "./rules/security-rules.ts";
 import type { Issue, Rule, RuleContext, ValidationReport } from "./types.ts";
 
 export type { Issue, Rule, ValidationReport, Severity } from "./types.ts";
+export { applyFix } from "./fixes.ts";
 
 export const RULES: readonly Rule[] = [
   referenceRuntimeRule,
@@ -22,6 +24,7 @@ export const RULES: readonly Rule[] = [
   ...graphRules,
   ...capabilityRules,
   ...securityRules,
+  ...agenticRules,
 ];
 
 export function validate(doc: StudioDocument, rules: readonly Rule[] = RULES): ValidationReport {

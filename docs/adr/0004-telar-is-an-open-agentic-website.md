@@ -20,7 +20,7 @@ Follow the challenge repository's `agentify-website` skill exactly:
   runs the skill's `build_network.mjs` (vendored in `tools/agentify/`) to write
   `public/telar_assistant.network.json`, the discovery files and the action bridge. CI runs
   it with `--check`.
-- **One agent, twelve site actions.** `public/site-actions.js` wraps `TelarPage`
+- **One agent, thirteen site actions.** `public/site-actions.js` wraps `TelarPage`
   (`src/ui/page-api.ts`), the page object the app creates at startup and exposes as
   `globalThis.telarPage`. Every action calls the same `StudioController` the UI uses.
 - **Effects:** every canvas change is one undo step, so all writes are `write`; there is no

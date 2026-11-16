@@ -14,6 +14,8 @@ export interface Issue {
   specRef?: string;
   /** `reference-runtime` issues come from the vendored validator the runtime itself runs. */
   source: "telar" | "reference-runtime";
+  /** A one-click fix for this issue, applied with `applyFix` (see validate/fixes.ts). */
+  fix?: { id: string; label: string };
 }
 
 /** Everything a rule may look at. Artifacts are derived once per validation run. */
