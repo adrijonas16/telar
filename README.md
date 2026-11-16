@@ -77,6 +77,18 @@ docs/            architecture and decision records
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and the [ADRs](docs/adr/).
 
+## Contributing (people and coding agents)
+
+[AGENTS.md](AGENTS.md) (also loaded as `CLAUDE.md`) has the commands, architecture rules and
+lessons learned. Step-by-step skills live in `.claude/skills/`:
+
+| Skill                   | Use it to                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `agentify-website`      | the challenge's official procedure, templates, scripts and runtime             |
+| `telar-add-check`       | add a validation check, optionally with a one-click fix                        |
+| `telar-add-site-action` | give Ask Telar a new ability                                                   |
+| `telar-e2e`             | test Ask Telar without an AI key, record demos, run the official partner check |
+
 ## Standards
 
 TypeScript strict mode · Custom Elements and Shadow DOM · ES modules · native `<dialog>` and

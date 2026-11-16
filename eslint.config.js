@@ -10,7 +10,7 @@ export default tseslint.config(
       // Vendored from the agentify-website skill, unchanged:
       "public/runtime/**",
       "public/bridge/**",
-      "tools/agentify/**",
+      ".claude/skills/**",
     ],
   },
   {

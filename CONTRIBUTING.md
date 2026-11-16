@@ -1,5 +1,7 @@
 # Contributing to Telar
 
+Start with [AGENTS.md](AGENTS.md); the skills in `.claude/skills/` walk through common changes.
+
 ## Workflow
 
 1. `npm install`, then `npm run dev`.

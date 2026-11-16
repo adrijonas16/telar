@@ -17,7 +17,7 @@ Follow the challenge repository's `agentify-website` skill exactly:
 - **Runtime:** the skill's runtime is copied unchanged to `public/runtime/`
   (Apache-2.0). It boots lazily the first time the visitor opens "Ask Telar".
 - **Network:** `agent/telar_assistant.hocon` is the source of truth; `npm run build:agent`
-  runs the skill's `build_network.mjs` (vendored in `tools/agentify/`) to write
+  runs the skill's `build_network.mjs` (the whole skill is vendored in `.claude/skills/agentify-website/`) to write
   `public/telar_assistant.network.json`, the discovery files and the action bridge. CI runs
   it with `--check`.
 - **One agent, thirteen site actions.** `public/site-actions.js` wraps `TelarPage`

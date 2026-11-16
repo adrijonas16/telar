@@ -7,5 +7,5 @@ public/bridge/
 public/.well-known/
 public/agent-mcp.json
 public/telar_assistant.network.json
-tools/agentify/
+.claude/skills/
 agent/*.hocon
