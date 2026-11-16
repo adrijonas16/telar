@@ -1,0 +1,171 @@
+/*
+ * "Ask Telar" drawer. Light DOM on purpose: the reference runtime mounts into #agent-app
+ * through document.querySelector. Rules below #agent-app are adapted from the
+ * agentify-website skill's templates/assistant.css (Apache-2.0).
+ */
+.assistant {
+  position: fixed;
+  top: 54px;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  width: min(440px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  box-shadow: -18px 0 48px rgb(28 32 69 / 14%);
+}
+.assistant[hidden] {
+  display: none;
+}
+.assistant-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.assistant-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  outline: none;
+}
+.assistant-head p {
+  margin: 3px 0 0;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.assistant-close {
+  margin-left: auto;
+  flex: none;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.assistant-close:hover {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+.assistant-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 14px 14px;
+}
+.assistant-note {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+#assistant-status {
+  margin: 0 0 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--agent-soft);
+  color: var(--agent);
+  font-size: 12.5px;
+}
+
+/* The runtime reads these variables for its chat, settings and agent panels. White text
+   sits on --ns-primary and --ns-accent, so both keep at least 4.5:1 contrast with white. */
+#agent-app {
+  --ns-font: var(--font-sans);
+  --ns-bg: #ffffff;
+  --ns-fg: #1c2045;
+  --ns-primary: #3546a5;
+  --ns-accent: #b0185a;
+  --ns-border: #dde1ea;
+  --ns-panelbg: #ffffff;
+  --ns-msgbg: #f1f3f8;
+  --ns-muted: #5f6585;
+  font-size: 13.5px;
+}
+#agent-app.ns-composed-app [data-ns-slot="chat"] {
+  height: calc(100vh - 300px);
+  min-height: 320px;
+}
+#agent-app [data-ns-slot="agents"] {
+  margin-top: 10px;
+}
+#agent-app .ns-chat {
+  background: var(--ns-bg);
+}
+#agent-app input[type="checkbox"],
+#agent-app input[type="radio"] {
+  width: auto;
+}
+#agent-app .ns-header {
+  flex-wrap: wrap;
+}
+#agent-app .ns-settings-body label {
+  margin: 4px 0;
+  font-weight: 400;
+}
+#agent-app .ns-w-label {
+  font-family: inherit;
+}
+#agent-app .ns-widget label {
+  margin: 0;
+}
+#agent-app .ns-w-radio label,
+#agent-app .ns-w-multi label,
+#agent-app .ns-w-toggle {
+  font-weight: 400;
+}
+#agent-app .ns-w-toggle {
+  font-size: 13px;
+}
+#agent-app button {
+  margin: 0;
+}
+#agent-app .ns-w-choice {
+  color: var(--ns-fg);
+}
+#agent-app .ns-devtoggle:not(.on):hover,
+#agent-app .ns-modal-close:hover {
+  background: transparent;
+}
+#agent-app .ns-w-choice:disabled:hover {
+  background: #fafbfc;
+}
+#agent-app .ns-consent {
+  background: #fffbeb;
+}
+#agent-app .ns-msgs:has(.ns-consent-actions) > .ns-turn-status {
+  display: none;
+}
+#agent-app .ns-msg {
+  overflow-wrap: break-word;
+}
+#agent-app .ns-consent-actions {
+  flex-wrap: wrap;
+}
+#agent-app .ns-consent-actions button {
+  white-space: nowrap;
+}
+
+/* The runtime adds its own dialogs to <body>. */
+body > dialog h2 {
+  margin: 0 0 12px;
+  font: 700 1.2em var(--font-display);
+}
+body > dialog button {
+  margin-right: 8px;
+}
+
+@media (max-width: 860px) {
+  .assistant {
+    top: 0;
+  }
+}

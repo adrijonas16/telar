@@ -12,7 +12,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "build:agent": "node tools/agentify/scripts/build_network.mjs agent/telar_assistant.hocon --manifest public/agent-manifest.json --runtime public/runtime --out public/telar_assistant.network.json",
+    "check:agent": "node tools/agentify/scripts/build_network.mjs agent/telar_assistant.hocon --manifest public/agent-manifest.json --runtime public/runtime --out public/telar_assistant.network.json --check"
   },
   "license": "Apache-2.0",
   "dependencies": {

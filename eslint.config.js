@@ -2,7 +2,21 @@ import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist/**", "node_modules/**", "src/core/validate/vendor/**"] },
+  {
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "src/core/validate/vendor/**",
+      // Vendored from the agentify-website skill, unchanged:
+      "public/runtime/**",
+      "public/bridge/**",
+      "tools/agentify/**",
+    ],
+  },
+  {
+    files: ["public/**/*.js"],
+    languageOptions: { globals: { globalThis: "readonly", console: "readonly" } },
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

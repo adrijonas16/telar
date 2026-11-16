@@ -20,3 +20,6 @@ export { applyLayout, NODE_WIDTH, NODE_HEIGHT } from "./layout/layered-layout.ts
 export { bundleFiles, bundleZip, json } from "./bundle/bundle.ts";
 export { bakerySample } from "./samples/bakery.ts";
 export { urlLabel, peerNetworkName } from "./util/urls.ts";
+export { AGENT_NAME_PATTERN } from "./validate/rules/agent-rules.ts";
+export { NETWORK_NAME_PATTERN } from "./validate/rules/network-rules.ts";
+export { isSecurePeerUrl } from "./serialize/manifest.ts";

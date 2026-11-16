@@ -1,6 +1,8 @@
 import { css, html, LitElement } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { StudioController } from "../controller.ts";
+import { TelarPage } from "../page-api.ts";
+import { isAssistantOpen, setAssistantOpen } from "../assistant/assistant.ts";
 import { StudioBinding } from "../controller-binding.ts";
 import { sharedStyles } from "../styles/shared.ts";
 import type { ArtifactKind } from "./telar-artifacts.ts";
@@ -30,6 +32,12 @@ function isTyping(event: KeyboardEvent): boolean {
 export class TelarApp extends LitElement {
   private readonly controller = new StudioController();
   private readonly binding = new StudioBinding(this, this.controller);
+
+  constructor() {
+    super();
+    // The page object the published site actions wrap (public/site-actions.js).
+    (globalThis as { telarPage?: TelarPage }).telarPage = new TelarPage(this.controller);
+  }
 
   @state() private panelTab: PanelTab = "checks";
   @state() private panelOpen = true;
@@ -124,6 +132,7 @@ export class TelarApp extends LitElement {
       <telar-toolbar
         .controller=${this.controller}
         @import-request=${() => this.importDialog.show()}
+        @toggle-assistant=${() => setAssistantOpen(!isAssistantOpen())}
         @show-welcome=${() => void this.welcome.showIfNew(true)}
         @show-checks=${() => {
           this.panelTab = "checks";

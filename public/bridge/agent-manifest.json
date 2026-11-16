@@ -1,0 +1,10 @@
+{
+  "networks": [
+    {
+      "name": "telar_assistant"
+    }
+  ],
+  "actions": {
+    "version": 1
+  }
+}

@@ -5,17 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Telar is a browser-only studio to design, validate and export agent networks for the open agentic web."
+      content="Telar is a browser-only studio to design, validate and export agent networks for the open agentic web. Its own assistant is an open agentic website."
     />
+    <!--
+      The assistant runtime needs: worker-src for its sandbox worker; blob: scripts inside
+      that worker; connect-src to the visitor's chosen LLM router (any https host); and
+      frame-src 'self' for the action bridge.
+    -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; frame-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <!-- This page is an open agentic website: its agent network is described here. -->
+    <link rel="alternate" type="application/json" href="./agent-manifest.json" title="Agent manifest" />
     <title>Telar · Open Agentic Web Studio</title>
   </head>
   <body>
     <telar-app></telar-app>
+
+    <!-- "Ask Telar": light DOM, because the reference runtime mounts with document.querySelector. -->
+    <aside id="assistant" class="assistant" aria-labelledby="assistant-heading" hidden>
+      <div class="assistant-head">
+        <div>
+          <h2 id="assistant-heading" tabindex="-1">Ask Telar</h2>
+          <p>
+            Describe your website and Telar's own agent builds the network on the canvas. Every change can be
+            undone.
+          </p>
+        </div>
+        <button class="assistant-close" type="button" aria-label="Close the assistant" data-close-assistant>
+          ✕
+        </button>
+      </div>
+      <div class="assistant-body">
+        <p class="assistant-note">
+          Runs in your browser with your own AI key. Your messages and this canvas go only to the AI provider
+          you choose in the settings below.
+        </p>
+        <p id="assistant-status" role="status">Loading the assistant…</p>
+        <div id="agent-app">
+          <div data-ns-slot="header"></div>
+          <div data-ns-slot="chat"></div>
+          <div data-ns-slot="settings"></div>
+          <div data-ns-slot="agents"></div>
+        </div>
+      </div>
+    </aside>
+
     <noscript>Telar needs JavaScript to run.</noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -1,5 +1,5 @@
 import { css, html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { bundleZip, json, networkFileName, toManifest, toNetworkJson } from "../../core/index.ts";
 import type { StudioController } from "../controller.ts";
 import { StudioBinding } from "../controller-binding.ts";
@@ -18,11 +18,21 @@ function emit(el: HTMLElement, name: string): void {
 @customElement("telar-toolbar")
 export class TelarToolbar extends LitElement {
   @property({ attribute: false }) controller!: StudioController;
+  @state() private assistantOpen = false;
   private binding?: StudioBinding;
+  private readonly onAssistantToggle = (e: Event) => {
+    this.assistantOpen = (e as CustomEvent<boolean>).detail;
+  };
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.binding ??= new StudioBinding(this, this.controller);
+    document.addEventListener("assistant-toggle", this.onAssistantToggle);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    document.removeEventListener("assistant-toggle", this.onAssistantToggle);
   }
 
   private closeMenus(): void {
@@ -138,6 +148,19 @@ export class TelarToolbar extends LitElement {
       </ol>
 
       <div class="group end">
+        <button
+          class="ask ${this.assistantOpen ? "on" : ""}"
+          aria-expanded=${this.assistantOpen ? "true" : "false"}
+          aria-controls="assistant"
+          title="Telar's own agent builds and explains networks for you"
+          @click=${() => emit(this, "toggle-assistant")}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5h16v11H9l-5 4z" />
+            <path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" />
+          </svg>
+          Ask Telar
+        </button>
         <button class="primary" popovertarget="export-menu">Export</button>
         <div id="export-menu" popover @beforetoggle=${this.placeMenu} class="menu right">
           <button class="ghost" @click=${() => this.exportBundle()}>
@@ -212,6 +235,29 @@ export class TelarToolbar extends LitElement {
       }
       .group.end {
         justify-self: end;
+        gap: 8px;
+      }
+      .ask {
+        border-color: var(--agent);
+        color: var(--agent);
+        font-weight: 700;
+      }
+      .ask svg {
+        width: 17px;
+        height: 17px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .ask:hover:not(:disabled) {
+        background: var(--agent-soft);
+        border-color: var(--agent);
+      }
+      .ask.on {
+        background: var(--agent);
+        color: #fff;
       }
       button.icon {
         font-size: 16px;

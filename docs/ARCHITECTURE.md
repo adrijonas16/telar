@@ -115,11 +115,22 @@ custom properties in `ui/styles/tokens.css`, which inherit into every shadow roo
 - Imports fetch public artifacts with `credentials: "omit"`, mirroring MVP spec §3.4.
 - The secret detector warns before anyone publishes a key inside a public network.
 
+## Telar's own agent (open agentic website)
+
+```
+index.html ─ #assistant drawer (light DOM) ─ runtime/index.js boot("#agent-app")
+                                               │ loads agent-manifest.json
+                                               │ loads telar_assistant.network.json
+                                               │ imports site-actions.js
+site-actions.js ── website_* tools ──► globalThis.telarPage (TelarPage, src/ui/page-api.ts)
+                                               └─► StudioController ─► core commands
+```
+
+`TelarPage` is the page object of the site-actions pattern: plain-JSON results, refusals as
+`{ok:false, reason, field}`, one undo step per write. See ADR 0004.
+
 ## Roadmap hooks
 
-- **Studio assistant (next).** Telar itself becomes an open agentic website: its network's
-  site actions map 1:1 to `StudioController` actions (`add_agent`, `connect`, `validate`...),
-  so an agent can build networks through the same, validated path a human uses.
 - **Live test run.** Embed the reference runtime and run the edited network with the
   visitor's own key, without publishing.
 - **Directory and security probe.** Index conforming sites; test a network against

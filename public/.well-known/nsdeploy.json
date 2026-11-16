@@ -1,0 +1,17 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "telar_assistant",
+      "front_man": "telar_assistant",
+      "aliases": [
+        "telar_assistant"
+      ],
+      "url": "telar_assistant"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}

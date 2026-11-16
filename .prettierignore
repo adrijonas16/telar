@@ -2,3 +2,10 @@ dist/
 node_modules/
 src/core/validate/vendor/
 package-lock.json
+public/runtime/
+public/bridge/
+public/.well-known/
+public/agent-mcp.json
+public/telar_assistant.network.json
+tools/agentify/
+agent/*.hocon

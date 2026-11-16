@@ -10,6 +10,10 @@ as you type, and export the files an agentic website publishes: `<network>.netwo
 Telar runs entirely in your browser. There is no server and no account, and your designs stay
 on your device until you export them.
 
+**Telar is itself an open agentic website.** Open **Ask Telar** and its own agent network
+designs, edits and explains networks on the canvas for you, using your own AI key.
+Other agent sites can call it at `https://adrijonas16.github.io/telar/telar_assistant`.
+
 > _Telar_ is Spanish for loom: the frame Andean weavers use to turn separate threads into one
 > fabric. Telar weaves agents from different sites into networks.
 
@@ -23,6 +27,27 @@ on your device until you export them.
 - **Lossless import:** load any published agentic site by URL, a `.network.json` file or pasted
   JSON. Fields Telar does not edit are preserved on export.
 - **Export:** a ready-to-host site bundle (.zip) or each file individually.
+- **Ask Telar:** a built-in assistant on the reference runtime. It reads the canvas and the
+  checks and changes the network through 12 site actions (build a whole network, add or
+  connect pieces, fix what the checks flag). Every change is one Undo step.
+
+## Telar's own agent network
+
+| Published file                                            | Purpose                                                                    |
+| --------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `agent-manifest.json`                                     | Site manifest: the `telar_assistant` network, router, peer policy, actions |
+| `telar_assistant.network.json`                            | The network (built from `agent/telar_assistant.hocon`)                     |
+| `site-actions.js`                                         | The 12 `website_*` tools, wrapping `src/ui/page-api.ts`                    |
+| `runtime/`                                                | Reference browser runtime, unchanged                                       |
+| `bridge/`, `.well-known/`, `agent-mcp.json`, `links.json` | Linking and discovery files                                                |
+
+Visitors bring their own key (hosted [Otari](https://otari.ai) by default, any
+OpenAI-compatible provider that allows browser CORS). `npm run check:agent` rebuilds and
+checks the network with the challenge's own `build_network.mjs`.
+
+Known limits: `write` actions run without a preview, as in the reference runtime (all are
+undoable here); GitHub Pages cannot send the recommended CSP header for
+`runtime/sandbox-worker.js`; the agent cannot publish, run or test networks.
 
 ## Quick start
 
@@ -32,6 +57,7 @@ Requires Node.js 22+.
 npm install
 npm run dev        # http://localhost:5173
 npm run check      # typecheck + lint + tests
+npm run build:agent  # rebuild Telar's own network from agent/telar_assistant.hocon
 npm run build      # static site in dist/
 ```
 

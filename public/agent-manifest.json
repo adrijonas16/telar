@@ -1,0 +1,82 @@
+{
+  "brand": "Telar assistant",
+  "networks": [
+    {
+      "name": "telar_assistant",
+      "front_man": "telar_assistant",
+      "hocon": "./telar_assistant.network.json",
+      "description": "Ask Telar to design an agent network for your website, explain the open agentic web, or fix what the checks flag.",
+      "tags": ["agentified-website", "studio", "open-agentic-web"],
+      "sample_queries": [
+        "Create a network for a bakery in Lima that answers menu questions and takes orders.",
+        "Why is my network not conforming, and can you fix it?",
+        "Add a tool server for address search and let the order agent use it.",
+        "What is an entry point, and why does my network need one?",
+        "Publish my network on my website for me."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Local agents and page-local actions only."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "telar_assistant",
+    "front_man": "telar_assistant",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#3546a5"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "telar_assistant",
+        "front_man": "telar_assistant",
+        "aliases": ["telar_assistant"],
+        "url": "telar_assistant"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "bridge": "./bridge/action-bridge.html",
+    "agentTools": [
+      "get_studio_state",
+      "build_network",
+      "add_agent",
+      "update_agent",
+      "add_peer",
+      "add_tool_server",
+      "connect",
+      "disconnect",
+      "set_entry_point",
+      "remove_piece",
+      "update_network",
+      "tidy_layout"
+    ]
+  }
+}
