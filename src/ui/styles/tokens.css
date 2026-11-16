@@ -1,0 +1,84 @@
+/*
+ * Design tokens. Custom properties inherit into every component's shadow root, so this is
+ * the single place to theme Telar.
+ *
+ * Concept: the canvas is a loom. Agents are knots on the warp; the connections are threads
+ * dyed with the natural Andean dyes weavers still use — indigo, chilca green, q'olle yellow
+ * and cochineal magenta — on a cool, glacier-grey ground.
+ */
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource/atkinson-hyperlegible/400.css";
+@import "@fontsource/atkinson-hyperlegible/700.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+:root {
+  color-scheme: light;
+  --font-display: "Bricolage Grotesque Variable", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Ground */
+  --paper: #eef1f5; /* glacier */
+  --surface: #ffffff;
+  --surface-2: #f6f7fa;
+  --line: #dde1ea;
+  --line-strong: #c3c9d6;
+  --warp: #d9dee8; /* loom threads on the canvas */
+
+  /* Ink */
+  --ink: #1c2045; /* deep indigo-black */
+  --ink-2: #464b6e;
+  --ink-3: #7a7f9c;
+
+  /* Dyes */
+  --accent: #b0185a; /* cochineal */
+  --accent-strong: #8e1048;
+  --accent-ink: #ffffff;
+  --accent-soft: #fbe3ee;
+  --agent: #3546a5; /* indigo */
+  --agent-soft: #e5e8f8;
+  --peer: #1f7a55; /* chilca green */
+  --peer-soft: #dcf1e7;
+  --mcp: #b07800; /* q'olle yellow, darkened for contrast */
+  --mcp-soft: #fbefcf;
+
+  /* Status */
+  --error: #c0262d;
+  --error-soft: #fde7e7;
+  --warning: #9a5b00;
+  --warning-soft: #fdf1d8;
+  --ok: #1f7a55;
+  --ok-soft: #dcf1e7;
+
+  --radius-lg: 14px;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow: 0 1px 2px rgb(28 32 69 / 6%), 0 6px 20px rgb(28 32 69 / 8%);
+  --shadow-lg: 0 24px 64px rgb(28 32 69 / 22%);
+  --focus: 0 0 0 3px rgb(53 70 165 / 35%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
